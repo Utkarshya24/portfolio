@@ -1,12 +1,13 @@
-// filepath: /c:/Users/Administrator/Documents/portfolio/src/app/components/baseComponents/home/about/AboutSection.tsx
+" use client ";
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { ArrowDown } from 'lucide-react';
 import { useSnapshot } from 'valtio';
 import { portfolioState } from '@/store/portfolio';
 
-const AboutSection = () => {
+export default function AboutSection ()  {
   const { stats } = useSnapshot(portfolioState);
+  
 
   return (
     <section id="about" className="">
@@ -54,4 +55,3 @@ const AboutSection = () => {
   );
 };
 
-export default AboutSection;

@@ -1,4 +1,5 @@
-// filepath: /c:/Users/Administrator/Documents/portfolio/src/app/components/baseComponents/home/featured/FeaturedSection.tsx
+"use client";
+
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
@@ -7,7 +8,7 @@ import { useSnapshot } from 'valtio';
 import { portfolioState } from '@/store/portfolio';
 import { ArrowDown } from 'lucide-react';
 
-const FeaturedSection = () => {
+export default function FeaturedSection ()  {
   const { featuredProjects } = useSnapshot(portfolioState);
 
   return (
@@ -62,4 +63,3 @@ const FeaturedSection = () => {
   );
 };
 
-export default FeaturedSection;
