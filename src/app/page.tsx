@@ -4,98 +4,81 @@ import { useSnapshot } from "valtio";
 import { portfolioState } from "@/store/portfolio";
 import { Typography, Box, Button } from "@mui/material";
 import Image from "next/image";
-import { Key } from "react";
-import Navbar from "./components/baseComponents/Navbar";
+import { useEffect, useState } from "react";
+import HeroProfile from "@/app/assets/heroProfile.png"
+import { ArrowDown} from "lucide-react";
+import AboutSection from "./components/baseComponents/home/about/page";
+import FeaturedSection from "./components/baseComponents/home/feature/page";
 
 export default function Home() {
-  const { stats, featuredProjects, services } = useSnapshot(portfolioState);
+  const {   services } = useSnapshot(portfolioState);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // Render nothing on the server
+  }
 
   return (
-    <Box maxWidth="100%">
-      <Navbar />
+    <Box maxWidth="100% " className="px-6 md:px-12">
+     
       {/* Hero Section */}
 
-      <Box gap={2} className=" items-center py-20">
-        <Box>
+      <Box gap={2} className=" min-h-screen items-center py-20">
+        <Box className="relative z-0">
           <Typography
             variant="h1"
             sx={{ fontSize: "10rem", textAlign: "center" }}
-            className="text-6xl md:text-4xl font-bold leading-tight text-center"
+            className="text-6xl font-bold bg-clip-text text-transparent md:text-4xl leading-tight text-center"
+            style={{
+              backgroundImage: "linear-gradient(to right, white 5%, black 30%, black 70%, white 95%)",
+            }}
           >
-            EXPLORE <span className="text-gray-400">MY</span>
-            <br />
+            EXPLORE MY
             PORTFOLIO
           </Typography>
-          <Typography variant="body1" className="mt-6 text-gray-600">
-            DESIGNER EST.2020
-          </Typography>
+          <Box className="flex justify-between align-center">
+          <Box className="flex flex-col  align-center">
+            <Typography variant="body1" className="mt-6 text-gray-600">
+              DEVELOPER EST.2023
+            </Typography>
+            <Box className="flex justify-center items-center  pt-6">
+            <ArrowDown className=" rounded-full border-2 border-gray-400 text-gray-400 " style={{ transform: 'rotate(-30deg)', width: '100px', height: '100px' }} />
+            </Box>
+            </Box>
+            <Box className="flex flex-col gap-40 ">
+              <Typography variant="body1" className="mt-6 text-gray-600 md:max-w-48 text-right">
+              I&apos;m a full-stack developer with a passion for building beautiful and functional websites/app.
+              </Typography>
+              <Box className="text-gray-600 md:max-w-48 text-right flex flex-col justify-end gap-2">
+  <Typography variant="body1">UI/UX</Typography>
+  <Typography variant="body1">FRONTEND</Typography>
+  <Typography variant="body1">BACKEND</Typography>
+  <Typography variant="body1">FULLSTACK</Typography>
+  <Typography variant="body1">DEVELOPER</Typography>
+</Box>
+            </Box>
+          </Box>
         </Box>
-        <Box className=" justify-center flex items-center">
+        <Box className="absolute bottom-0 left-0 right-0 z-10 top-[580px] justify-center flex items-center ">
           <Image
-            src="/assets/heroProfile.jpeg"
+            src={HeroProfile}
             alt="Profile"
-            width={400}
-            height={400}
+            width={300}
+            height={300}
             className="rounded-full"
+            style={{ mixBlendMode: 'multiply' }} 
           />
         </Box>
       </Box>
 
-      {/* About Section */}
-      <section id="about" className="py-20">
-        <Typography variant="h2" className="mb-12">
-          ABOUT<span className="text-gray-400">.</span>
-        </Typography>
-        <Box>
-          <Box>
-            <Box className="text-center p-6 border border-gray-200">
-              <Typography variant="h3">{stats.projects}</Typography>
-              <Typography>SUCCESSFUL PROJECTS</Typography>
-            </Box>
-          </Box>
-          <Box>
-            <Box className="text-center p-6 border border-gray-200">
-              <Typography variant="h3">{stats.clients}</Typography>
-              <Typography>HAPPY CLIENTS</Typography>
-            </Box>
-          </Box>
-          <Box>
-            <Box className="text-center p-6 border border-gray-200">
-              <Typography variant="h3">{stats.experience}</Typography>
-              <Typography>YEARS EXPERIENCE</Typography>
-            </Box>
-          </Box>
-        </Box>
-      </section>
+      <AboutSection />
 
       {/* Featured Projects Section */}
-      <section id="projects" className="py-20">
-        <Typography variant="h2" className="mb-12">
-          FEATURED PROJECT<span className="text-gray-400">.</span>
-        </Typography>
-        <Box>
-          {featuredProjects.map(
-            (project: { id: Key; image: string; title: string }) => (
-              <Box key={project.id}>
-                <Box className="relative group cursor-pointer">
-                  <Image
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.title}
-                    width={500}
-                    height={300}
-                    className="w-full object-cover"
-                  />
-                  <Box className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <Typography variant="h6" className="text-white">
-                      {project.title}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            )
-          )}
-        </Box>
-      </section>
+      <FeaturedSection />
 
       {/* Services Section */}
       <section id="services" className="py-20">

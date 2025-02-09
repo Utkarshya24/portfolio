@@ -15,6 +15,8 @@ export default {
       fontFamily: {
         segoe: ['"Segoe UI"', "sans-serif"],
       },
+      
+      
     },
   },
   plugins: [],
