@@ -1,29 +1,36 @@
-# Stage 1: Build the application
-FROM node:18-alpine AS builder
+# Use the official Node.js image from the Docker Hub
+FROM node:18-alpine AS base
+
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy dependency files and install packages
-COPY package.json package-lock.json* ./
+# Copy package.json and package-lock.json to the working directory
+COPY package.json package-lock.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy all project files and build the Next.js app
+# Copy the rest of the application code
 COPY . .
+
+# Build the Next.js application
 RUN npm run build
 
-# Stage 2: Setup the production environments
-FROM node:18-alpine AS runner
+# Use a smaller image for the final stage
+FROM node:18-alpine AS production
+
+# Set the working directory
 WORKDIR /app
 
+# Copy only the necessary files from the base stage
+COPY --from=base /app/package.json /app/package-lock.json ./
+COPY --from=base /app/.next ./.next
+COPY --from=base /app/public ./public
+COPY --from=base /app/node_modules ./node_modules
+COPY --from=base /app/next.config.ts ./next.config.ts 
 
-# Copy essential files from the builder stage
-COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
-
-# Expose the port the app will run on (default is 3000)
+# Expose the port that Next.js runs on
 EXPOSE 3000
 
-# Start the Next.js app
+# Command to run the application
 CMD ["npm", "start"]
