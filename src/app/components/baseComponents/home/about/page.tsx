@@ -1,4 +1,5 @@
-" use client ";
+"use client";
+
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { ArrowDown } from 'lucide-react';
